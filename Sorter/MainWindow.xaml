@@ -1,0 +1,155 @@
+﻿<Window x:Class="Sorter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sorter"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Сортироввщик" Height="396" Width="710"
+        Icon="color_ico.png"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ControlTemplate TargetType="Button" x:Key="ButtonStyle">
+            <Border CornerRadius="7"
+                    Background="{TemplateBinding Background}" Margin="0,0,0,0">
+                <ContentControl Margin="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding Content}" />
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <TabControl HorizontalAlignment="Left" VerticalAlignment="Top" Width="704" Height="367">
+            <TabItem x:Name="Sorter" Header="Сортировщик">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFE1FFD3" Offset="0"/>
+                            <GradientStop Color="#FFF37979" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <TextBox x:Name="Input2" Visibility="Hidden" BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="235" Background="Aqua" TextChanged="Input_TextChanged"/>
+                   
+
+                    <Grid Margin="256,141,122,150">
+                        <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                              VerticalScrollBarVisibility="Disabled">
+                            <Border BorderThickness="0,1" BorderBrush="#FF020202" CornerRadius="20" Height="30" >
+                                <TextBox x:Name="sorted" Background="Transparent" Height="30" VerticalAlignment="Center" Width="Auto" Padding="4,4,4,2" TextWrapping="Wrap" OpacityMask="#FF271F1F" IsReadOnly="True">
+
+                                </TextBox>
+                            </Border>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid Margin="256,38,122,250">
+                        <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                              VerticalScrollBarVisibility="Disabled">
+                            <Border BorderThickness="0,1" BorderBrush="#FF020202" CornerRadius="20" Height="30" >
+                                <TextBox x:Name="Input" Height="30" VerticalAlignment="Center" Width="Auto" Padding="4,4,4,2" TextWrapping="Wrap" OpacityMask="#FF271F1F" Background="Transparent" TextChanged="Input_TextChanged"/>
+
+                            </Border>
+                        </ScrollViewer>
+                    </Grid>
+                    <Button Content="Сортировать до конца" HorizontalAlignment="Left" Margin="422,214,0,0" VerticalAlignment="Top" Width="170" Click="Button_Click_Sort" Template="{StaticResource ButtonStyle}" FontFamily="Bahnschrift Condensed" FontSize="20"  Background="#FFFFFF50" RenderTransformOrigin="0.5,0.5" >
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <SkewTransform AngleX="15"/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                    </Button>
+                    <Button Content="Сортировать по группе" HorizontalAlignment="Left" Margin="243,214,0,0" VerticalAlignment="Top" Width="170" Click="Button_Click_Next" Template="{StaticResource ButtonStyle}" FontFamily="Bahnschrift Condensed" FontSize="20" RenderTransformOrigin="0.5,0.5" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF11F1D3" Offset="0"/>
+                                <GradientStop Color="#FF27F082" Offset="0.82"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <SkewTransform AngleX="15"/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                    </Button>
+                    <Button Content="Очистить" HorizontalAlignment="Left" Margin="15,301,0,0" VerticalAlignment="Top" Width="125" Height="25" Click="Button_Click_del" Template="{StaticResource ButtonStyle}" FontFamily="Bahnschrift Condensed" FontSize="20" RenderTransformOrigin="0.566,-0.18" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF11F1D3" Offset="0"/>
+                                <GradientStop Color="#FF27F082" Offset="0.82"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="14.999999999999986"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-4.55"/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                    </Button>
+
+
+                    <!--<TextBlock x:Name="history2" Visibility="Hidden" HorizontalAlignment="Left" Margin="10,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="245" Width="204" Background="Crimson"/>
+                    <Grid Margin="10,30,558,101" Visibility="Hidden">
+                        <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                              VerticalScrollBarVisibility="Visible">
+                            <TextBlock x:Name="history" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="Auto" Width="Auto">
+                                <TextBlock.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF11F1D3" Offset="0"/>
+                                        <GradientStop Color="#FF27F082" Offset="0.82"/>
+                                    </LinearGradientBrush>
+                                </TextBlock.Background>
+                            </TextBlock>
+                        </ScrollViewer>
+                    </Grid>-->
+
+                    <DataGrid Name="DataTable1" Visibility="Visible" Width="204" Height="243" AutoGenerateColumns="True" Margin="10,30,0,0"
+                              IsReadOnly="True"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                        <DataGrid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF11F1D3" Offset="0"/>
+                                <GradientStop Color="#FF27F082" Offset="0.82"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding GroupNumber}" Header="№" Width="1*"/>
+                            <DataGridTextColumn Binding="{Binding SourceMass}" Header="Группа" Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding SortedMass}" Header="Взвешиваний" Width="2*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Label Content="История" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" FontFamily="Bahnschrift Condensed" FontSize="16"/>
+                    <Label Content="Кол-во взвешиваний:" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top" FontFamily="Bahnschrift Condensed" FontSize="16"/>
+                    <Label x:Name="weighingsCount" Content="0" HorizontalAlignment="Left" Margin="130,273,0,0" VerticalAlignment="Top" Width="50" FontFamily="Bahnschrift Condensed" FontSize="16"/>
+                    <Label Content="Отсортированный массив" HorizontalAlignment="Left" Margin="256,102,0,0" VerticalAlignment="Top" FontFamily="Bahnschrift Condensed" FontSize="20"/>
+                    <Label Content="Исходный массив" HorizontalAlignment="Left" Margin="256,2,0,0" VerticalAlignment="Top" FontFamily="Bahnschrift Condensed" FontSize="20"/>
+
+                    <Grid Visibility="Visible">
+                        <Button Template="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="590,22,0,0" VerticalAlignment="Top" Width="82" Height="77" RenderTransformOrigin="0.5,0.5" 
+                            Click="Button_Click_Help">
+                            <Button.Background>
+                                <ImageBrush ImageSource="icon_question.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
+                        <Label Content="del" VerticalAlignment="Bottom" Margin="10,0,742,73" Height="29"/>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="Data" Header="Данные">
+                <DataGrid Name="DataTable" Width="698" Height="337" AutoGenerateColumns="False" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding SourceMass}" Header="Исходный массив" Width="3*"/>
+                        <DataGridTextColumn Binding="{Binding SortedMass}" Header="Сортированный массив" Width="3*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>
