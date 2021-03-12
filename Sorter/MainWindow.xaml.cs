@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +21,6 @@ namespace Sorter
     public partial class MainWindow : Window
     {
         int[] ARR = null; //сортируемый массив
-        string result = ""; //для вывода
         List<int[]> arrays = null; //сгруппированные массивы по группам 5 4 3
         int weighing = 0; //кол-во взвешиваний;
         int iterations = 0;//кол-во групп
@@ -33,6 +32,7 @@ namespace Sorter
 
         void groubSplit(int[] array)
         {
+            if (ARR == null) return;
             //групаа 1(6) - 3 3
             //групаа 2(7) - 3 4
             //групаа 3(3) - 3
@@ -109,13 +109,11 @@ namespace Sorter
                 }
             }
 
-            //int C = Factorial(20) / (Factorial(5) * Factorial(20 - 5));
-            //MessageBox.Show(C.ToString(), "Отсортированный массив", MessageBoxButton.OK, MessageBoxImage.Information);
+           //MessageBox.Show(C.ToString(), "Отсортированный массив", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
         void readTextBox()
         {
-            //char[] separators = " .,/\\/r/n'\"".ToCharArray();
             char[] separators = ";".ToCharArray();
             string[] arrayS = Input.Text.Trim().Split(separators, StringSplitOptions.RemoveEmptyEntries);
             int[] array = new int[arrayS.GetLength(0)];
@@ -258,9 +256,14 @@ namespace Sorter
         {
             for (int i = iterations; i < arrays.Count; i++)
             {
+                int oldWeight = weighing;
                 if (arrays[i].Length == 5) sort5(arrays[i]);
                 else if (arrays[i].Length == 4) sort4(arrays[i]);
                 else sort3(arrays[i]);
+
+                DataTable1.Items.Add(new group { GroupNumber = iterations + 1, SourceMass = concatArray(arrays[iterations]), SortedMass = (weighing - oldWeight).ToString() });
+                iterations++;
+                weighingsCount.Content = weighing;
             }
         }
         private void Button_Click_Next(object sender, RoutedEventArgs e)
@@ -273,22 +276,16 @@ namespace Sorter
             if (iterations < arrays.Count)
             {
                 int oldWeight = weighing;
-                //for (int i = iterations; i < arrays.Count; i++)
-                //{
-                //    for (int j = 0; j < arrays[i].Length; j++)
-                //        result += arrays[i][j] + ";";
-                //}
-                //history.Text += $"Группа: ({concatArray(arrays[iterations])})";
                 if (arrays[iterations].Length == 5) sort5(arrays[iterations]);
                 else if (arrays[iterations].Length == 4) sort4(arrays[iterations]);
                 else sort3(arrays[iterations]);
-                //history.Text += $" | Взвешиваний: {weighing - oldWeight}\n";
-                DataTable1.Items.Add(new group { GroupNumber=iterations+1, SourceMass = concatArray(arrays[iterations]), SortedMass = (weighing - oldWeight).ToString() }); 
-
+                DataTable1.Items.Add(new group { GroupNumber=iterations+1, SourceMass = concatArray(arrays[iterations]), SortedMass = (weighing - oldWeight).ToString() });
+                weighingsCount.Content = weighing;
                 sorted.Text += concatArray(arrays[iterations]);
                 iterations++;
-                weighingsCount.Content = weighing;
             }
+            //иначе массив уже отсортирован и нужно закинуть его в БД 
+            //здесь нужна запись в БД
         }
         string concatArray(int[] array)
         {
@@ -302,14 +299,23 @@ namespace Sorter
 
         private void Button_Click_Sort(object sender, RoutedEventArgs e)
         {
-            readTextBox();
-            groubSplit(ARR);
+            if (ARR == null)
+            {
+                readTextBox();
+                groubSplit(ARR);
+            }
+            else if (iterations == arrays.Count)
+            {
+                return;            
+            }
             sortAll();
             for (int i = 0; i < arrays.Count; i++)
             {
                 sorted.Text += concatArray(arrays[i]);
             }
             weighingsCount.Content = weighing;
+
+            //здесь нужна запись в БД
             //MessageBox.Show(result, "Отсортированный массив", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -330,6 +336,7 @@ namespace Sorter
                 //}
                 TextBox.SelectionStart = str.Length;
                 TextBox.Text = str;
+                Button_Click_del(null, null);
             }
         }
         #region Для тестов
@@ -379,6 +386,10 @@ namespace Sorter
         {
             DataTable1.Items.Clear();
             weighingsCount.Content = 0;
+            iterations = 0;
+            weighing = 0;
+            sorted.Text = "";
+            ARR = null;
         }
         private void Button_Click_Help(object sender, RoutedEventArgs e)
         {
