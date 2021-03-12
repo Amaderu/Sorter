@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace Sorter
 {
@@ -28,6 +29,11 @@ namespace Sorter
         public MainWindow()
         {
             InitializeComponent();
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Введите массив целых чисел разделённых ';'\n Например: \"1;2;3;\"");
+            //db = new gr682_hiaEntities();
         }
 
         void groubSplit(int[] array)
@@ -129,7 +135,8 @@ namespace Sorter
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Введите массив целых чисел разделённых ';'\n Например: \" 1;2;3;\" ");
+                    MessageBox.Show("Введите массив целых чисел разделённых ';'\n Например: \"1;2;3;\"");
+                    ARR = null;
                     //throw;
                 }
 
@@ -273,6 +280,8 @@ namespace Sorter
                 readTextBox();
                 groubSplit(ARR);
             }
+            //заглушка
+            if (ARR == null) return;
             if (iterations < arrays.Count)
             {
                 int oldWeight = weighing;
@@ -308,6 +317,8 @@ namespace Sorter
             {
                 return;            
             }
+            //заглушка
+            if (ARR == null) return;
             sortAll();
             for (int i = 0; i < arrays.Count; i++)
             {
@@ -323,17 +334,17 @@ namespace Sorter
         {
             if (sender is TextBox TextBox)
             {
-                string str = new string(TextBox.Text.Where(ch => (ch >= '0' && ch <= '9') || ch == ';').ToArray());
+                string str = new string(TextBox.Text.Where(ch => (ch >= '0' && ch <= '9') || ch == ';'|| ch == '-').ToArray());
                 if (str.Length > 2 && str[str.Length - 2] == ';' && str[str.Length - 1] == ';')
                     str = str.Remove(str.Length - 1);
                 else if (str.Where((n) => n == ';').Count() == 1 && str.Length == 1)
                 {
                     str = str.Remove(str.Length - 1);
                 }
-                //else if (str.Where((n) => n == ';').Count() > 1)
-                //{
-                //    str = str.Remove(str.Length - 1);
-                //}
+                if (str.Length > 1 && str[str.Length - 1] == '-' && str[str.Length - 2] != ';')
+                    str = str.Remove(str.Length - 1);
+
+
                 TextBox.SelectionStart = str.Length;
                 TextBox.Text = str;
                 Button_Click_del(null, null);
@@ -395,6 +406,26 @@ namespace Sorter
         {
             MessageBox.Show("Введите массив целых чисел разделённых ';'\nНапример: \"1;2;3;\" ");
         }
+        //private void Insert(object sender, RoutedEventArgs e)
+        //{
+        //    dbSorter row = new dbSorter();
+        //    string source;
+        //    for (int i = 0; i < arrays.Count; i++)
+        //    {
+        //        sorted.Text += concatArray(arrays[i]);
+        //    }
+        //    row.SourceMass = Input.Text.ToString();
+        //    row.SortedMass = sorted.Text.ToString();
+        //    db.dbSorters.Add(row);
+        //    db.SaveChanges();
+        //    DataTable.ItemsSource = db.dbSorters.ToList();
+
+        //}
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    db = new gr682_hiaEntities();
+        //    DataTable.ItemsSource = db.dbSchools.ToList();
+        //}
     }
     public class group
     {
@@ -402,4 +433,11 @@ namespace Sorter
         public string SourceMass { get; set; }
         public string SortedMass { get; set; }
     }
+    //public partial class dbSorter
+    //{
+    //    public int id { get; set; }
+    //    public string SourceMass { get; set; }
+    //    public string SortedMass { get; set; }
+    //}
+    
 }

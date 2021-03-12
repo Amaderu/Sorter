@@ -9,7 +9,7 @@
         Title="Сортироввщик" Height="396" Width="710"
         Icon="color_ico.png"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <ControlTemplate TargetType="Button" x:Key="ButtonStyle">
             <Border CornerRadius="7"
@@ -31,8 +31,7 @@
                             <GradientStop Color="#FFF37979" Offset="1"/>
                         </LinearGradientBrush>
                     </Grid.Background>
-                    <TextBox x:Name="Input2" Visibility="Hidden" BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="235" Background="Aqua" TextChanged="Input_TextChanged"/>
-                   
+
 
                     <Grid Margin="256,141,122,150">
                         <ScrollViewer HorizontalScrollBarVisibility="Visible"
